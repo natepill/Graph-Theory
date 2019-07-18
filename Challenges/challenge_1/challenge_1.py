@@ -8,9 +8,23 @@ def read_graph(filename):
     """ Read and parse file containing Graph information"""
 
     with open(filename, "r") as file:
-        graph_info = file.read().split("/n")
+        graph_info = file.read().split("\n")
+
+    # Remove extra new line created by Atom
+    del graph_info[-1]
 
     return graph_info
+
+def parse_edge(edge):
+
+    new_edge = []
+
+    for char in edge:
+        if char.isalnum():
+            new_edge.append(int(char))
+
+    print("New_edge:", new_edge)
+    return new_edge
 
 
 def construct_graph(filename):
@@ -18,17 +32,23 @@ def construct_graph(filename):
 
     graph_info = read_graph(filename) # parsed graph info file
 
-    type_of_graph = graph_info[0] # Graph or DiGraph
-    list_of_verticies = graph_info[1] # Verticies to add to the Graph
-    list_of_edges = graph_info[2:] # Describe the edges that connect verticies including possible weight
+    print("Graph Info:", graph_info)
+    print(graph_info[2:])
 
+    type_of_graph = graph_info[0] # Graph or DiGraph
+    list_of_verticies = [int(vert) for vert in graph_info[1] if vert.isalnum()] # Verticies to add to the Graph
+    list_of_edges = [parse_edge(edge) for edge in graph_info[2:]] # Describe the edges that connect verticies including possible weight
+
+
+    # print("List of Verts:", list_of_verticies)
+    print("List of Edges:", list_of_edges)
     # if type_of_graph == "G":
 
     graph = Graph()
 
     # Add verticies to the Graph
     for vert in list_of_verticies:
-        graph.addVertex(vert)
+        graph.addVertex(int(vert))
 
     # Connect the Verticies with edges
     for edge_tuple in list_of_edges:
@@ -40,9 +60,23 @@ def construct_graph(filename):
             graph.addEdge(edge_tuple[0], edge_tuple[1])
 
 
+    return graph
 
+
+def grab_graph_info(graph, filename):
+    """ Return Tuple object with number of vertices, number of edges, and the Edge List"""
+
+    edge_list = open(filename, 'r').read().split("/n")[2:]
+    num_of_edges = len(edge_list)
+
+    return [graph.numVertices, num_of_edges, edge_list]
 
 
 
 
 if __name__ == "__main__":
+
+    graph = construct_graph(sys.argv[1])
+    graph_info = grab_graph_info(graph, sys.argv[1])
+
+    print(graph_info)
