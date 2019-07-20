@@ -1,7 +1,5 @@
 from graph import Graph, Vertex
-
 import sys
-
 
 
 def read_graph(filename):
@@ -19,11 +17,24 @@ def parse_edge(edge):
 
     new_edge = []
 
-    for char in edge:
-        if char.isalnum():
-            new_edge.append(int(char))
+    edge = edge.split(',')
+    print("edge:",edge)
 
-    print("New_edge:", new_edge)
+    for edge_info in edge:
+
+        curr_edge = ''
+        for char in edge_info:
+            if char == '(' or char == ')':
+                continue
+            curr_edge += char
+
+        new_edge.append(int(curr_edge))
+
+
+
+
+
+    print("New_edge:", edge)
     return new_edge
 
 
@@ -37,8 +48,8 @@ def construct_graph(filename):
 
     type_of_graph = graph_info[0] # Graph or DiGraph
     list_of_verticies = [int(vert) for vert in graph_info[1] if vert.isalnum()] # Verticies to add to the Graph
+    # print("graph_info[2:]:", graph_info[2:])
     list_of_edges = [parse_edge(edge) for edge in graph_info[2:]] # Describe the edges that connect verticies including possible weight
-
 
     # print("List of Verts:", list_of_verticies)
     print("List of Edges:", list_of_edges)
