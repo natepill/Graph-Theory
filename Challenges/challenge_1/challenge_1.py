@@ -18,7 +18,7 @@ def parse_edge(edge):
     new_edge = []
 
     edge = edge.split(',')
-    print("edge:",edge)
+    # print("edge:",edge)
 
     for edge_info in edge:
 
@@ -34,7 +34,7 @@ def parse_edge(edge):
 
 
 
-    print("New_edge:", edge)
+    # print("New_edge:", edge)
     return new_edge
 
 
@@ -42,9 +42,9 @@ def construct_graph(filename):
     """ Construct graph based on information in the filename """
 
     graph_info = read_graph(filename) # parsed graph info file
-
-    print("Graph Info:", graph_info)
-    print(graph_info[2:])
+    #
+    # print("Graph Info:", graph_info)
+    # print(graph_info[2:])
 
     type_of_graph = graph_info[0] # Graph or DiGraph
     list_of_verticies = [int(vert) for vert in graph_info[1] if vert.isalnum()] # Verticies to add to the Graph
@@ -52,7 +52,7 @@ def construct_graph(filename):
     list_of_edges = [parse_edge(edge) for edge in graph_info[2:]] # Describe the edges that connect verticies including possible weight
 
     # print("List of Verts:", list_of_verticies)
-    print("List of Edges:", list_of_edges)
+    # print("List of Edges:", list_of_edges)
     # if type_of_graph == "G":
 
     graph = Graph()
@@ -92,4 +92,10 @@ if __name__ == "__main__":
     graph = construct_graph(sys.argv[1])
     graph_info = grab_graph_info(graph, sys.argv[1])
 
-    print(graph_info)
+    print("Vertices:", graph_info[0])
+    print("Edges:", graph_info[1])
+    print("Edge List:")
+    for edge in graph_info[2]:
+        print(edge)
+
+    # print(graph_info)
