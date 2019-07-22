@@ -59,16 +59,16 @@ def construct_graph(filename):
 
     # Add verticies to the Graph
     for vert in list_of_verticies:
-        graph.addVertex(int(vert))
+        graph.add_vertex(int(vert))
 
     # Connect the Verticies with edges
-    for edge_tuple in list_of_edges:
+    for edge_list in list_of_edges:
 
-        if len(edge_tuple) == 3:
-            graph.addEdge(edge_tuple[0], edge_tuple[1], edge_tuple[1])
+        if len(edge_list) == 3:
+            graph.add_edge(edge_list[0], edge_list[1], edge_list[2])
 
-        if len(edge_tuple) == 2:
-            graph.addEdge(edge_tuple[0], edge_tuple[1])
+        if len(edge_list) == 2:
+            graph.add_edge(edge_list[0], edge_list[1])
 
 
     return graph
@@ -77,10 +77,12 @@ def construct_graph(filename):
 def grab_graph_info(graph, filename):
     """ Return Tuple object with number of vertices, number of edges, and the Edge List"""
 
-    edge_list = open(filename, 'r').read().split("/n")[2:]
+    edge_list = open(filename, 'r').read().split("\n")[2:-1]
+    # with open(filename, 'wr') as file:
+    #     content = file.
     num_of_edges = len(edge_list)
 
-    return [graph.numVertices, num_of_edges, edge_list]
+    return [graph.num_vertices, num_of_edges, edge_list]
 
 
 
