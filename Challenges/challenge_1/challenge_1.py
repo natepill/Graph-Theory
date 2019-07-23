@@ -32,8 +32,6 @@ def parse_edge(edge):
 
 
 
-
-
     # print("New_edge:", edge)
     return new_edge
 
@@ -42,7 +40,7 @@ def construct_graph(filename):
     """ Construct graph based on information in the filename """
 
     graph_info = read_graph(filename) # parsed graph info file
-    #
+
     # print("Graph Info:", graph_info)
     # print(graph_info[2:])
 
@@ -69,7 +67,6 @@ def construct_graph(filename):
 
         if len(edge_list) == 2:
             graph.add_edge(edge_list[0], edge_list[1])
-
 
     return graph
 

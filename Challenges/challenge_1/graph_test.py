@@ -21,14 +21,13 @@ class VertexTest(unittest.TestCase):
         assert vertex_1.get_edge_weight(vertex_2) is 0
 
 
-        # add another vertex with weight
         vertex_3 = 'C'
         vertex_1.add_neighbor(vertex_3, 5)
         assert vertex_3 in vertex_1.neighbors
         assert len(vertex_1.get_neighbors()) is 2
         assert vertex_1.get_edge_weight(vertex_3) is 5
 
-        # adding duplicate neighbor
+        # duplicate neighbor
         vertex_1.add_neighbor(vertex_2, 3)
         assert vertex_2 in vertex_1.neighbors
         assert len(vertex_1.get_neighbors()) is 2
