@@ -1,7 +1,5 @@
 #!python
 
-
-
 class Vertex(object):
 
     def __init__(self, vertex):
@@ -87,7 +85,7 @@ class Graph:
         else:
             # edge by making key2 a neighbor of key1
             # and using the addNeighbor method of the Vertex class.
-            # Hint: the vertex f is stored in self.vert_dict[f].
+
             self.vert_dict[from_vert].add_neighbor(self.vert_dict[to_vert], weight)
             # self.vert_dict[to_vert].add_neighbor(self.vert_dict[from_vert], weight)
 
@@ -102,6 +100,55 @@ class Graph:
             sum += v.get_edges()
         return sum
 
+    def dfs_recursive(self, from_vertex, visited=None, order=None):
+        """Traverse the graph and get all vertices using DFS algorithm
+        """
+
+        if from_vertex not in self.vert_dict:
+            raise KeyError(
+                "One of the given vertices does not exist in graph!")
+
+        current_vertex = self.vert_dict[from_vertex]
+        # check if its first iteration
+        if visited is None and order is None:
+            visited = set()
+            order = []
+
+        visited.add(current_vertex.data)
+        order.append(current_vertex.data)
+
+        for neigbor in current_vertex.neighbors:
+            if neigbor.data not in visited:
+                self.dfs_recursive(neigbor.data, visited, order=order)
+
+        # print(order)
+        return order
+
+    def dfs_paths(self, from_vertex, to_vertex, visited=None):
+        """
+        Find a path between two vertices using Depth First Search
+        """
+        if from_vertex not in self.vert_dict or to_vertex not in self.vert_dict:
+            raise KeyError("A vertex does not exist")
+
+        # check if you are at the location
+        if from_vertex == to_vertex:
+            return [from_vertex]
+        if visited is None:
+            visited = set()
+        current_vertex = self.vert_dict[from_vertex]
+        visited.add(current_vertex.data)
+
+        for neighbor in current_vertex.neighbors:
+
+            if neighbor.data not in visited:
+                path = self.dfs_paths(neighbor.data, to_vertex, visited)
+                # print("after path updated")
+                if path:
+                    path.append(current_vertex.data)
+                    return path
+
+        return []
 
 
 
