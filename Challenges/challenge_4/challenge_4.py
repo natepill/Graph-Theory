@@ -13,4 +13,12 @@ without exceeding the capacity  C
 
 
 
-if __name__ == "__main__"
+if __name__ == "__main__":
+
+
+items = (("boot", 10, 60),
+         ("tent", 20, 100),
+         ("water", 30, 120),
+         ("first aid", 15, 70))
+# Capacity of knapsack: 50
+# The value of the optimal solution to the knapsack problem is V=230
