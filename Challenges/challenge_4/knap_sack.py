@@ -1,17 +1,13 @@
 
-
-def knapsack(capacity, items, n):
+def knapsack(capacity, items, n, lookup):
     '''
     A  method to determine the maximum value of the items included in the knapsack
-  without exceeding the capacity  C
+    without exceeding the capacity  C
 
-      Parameters:
-      C= 50
-      items = (("boot", 10, 60),
-           ("tent", 20, 100),
-           ("water", 30, 120),
-           ("first aid", 15, 70))
-      Returns: max value
+    Parameters:
+    Capacity (int): Max Weight
+    Items (arr of tuples): items in knapsack
+    n (int): number of items
 
     inputs: Array of tuples, weights, item values and the maximum capacity of the bag
     output: the max value the bag may contain
@@ -21,17 +17,15 @@ def knapsack(capacity, items, n):
         return 0
 
     if (items[n-1][1] > capacity):
-        # print(items[n-1][1])
+
         return knapsack(capacity, items, n-1)
 
     else:
-        return max(items[n-1][2] + knapsack(capacity - items[n-1][1], items, n-1 ),
-                    knapsack(capacity, items, n-1))
+        return max(items[n-1][2] + knapsack(capacity - items[n-1][1], items, n-1 ), knapsack(capacity, items, n-1))
 
 
 
 if __name__ == "__main__":
-
 
     items = (("boot", 10, 60),
         ("tent", 20, 100),
