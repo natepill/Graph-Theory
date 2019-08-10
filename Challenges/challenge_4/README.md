@@ -7,7 +7,9 @@ In your README - Define in words, the 5 steps of DP as applied to this problem.
 ### Resources:
 * https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
 
-## 5 Step of DP that was used:
+## 5 Steps of Dynamic Programming for Knapsack:
+
+*
 
 ## 5 Steps of Dynamic Programming for Edit Distance
 * Should we insert, remove, or replace current character to get closer to equating the two strings
