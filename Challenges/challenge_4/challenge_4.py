@@ -11,6 +11,20 @@ without exceeding the capacity  C
     Returns: max value
 '''
 
+def recursive_knapsack(items, capacity):
+    '''
+    inputs: Array of tuples, weights, item values and the maximum capacity of the bag
+    output: the max value the bag may contain
+    '''
+    if len(items) == 0 or capacity == 0:
+        return 0
+    item = items[0]
+    if item[0] > capacity:
+        return recursive_knapsack(items[1:], capacity)
+    value_without = recursive_knapsack(items[1:], capacity)
+    value_with = recursive_knapsack(
+        items[1:], capacity - item[0]) + item[1]
+    return max(value_with, value_without)
 
 
 if __name__ == "__main__":
