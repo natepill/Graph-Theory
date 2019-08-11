@@ -75,25 +75,122 @@ class Graph:
             return key
         return None
 
+    def get_neighbors_of(self, vertex):
+        """
+        Grabs all the neighbors of the current vertex
+        Args:
+            vertex (str): a given vertex
+        Returns:
+            vertex (Vertex): Vertex object if found
+        """
+        if vertex in self.vert_dict:
+            return self.vert_dict[vertex]
+        raise KeyError("The vertex not found in the Graph!")
 
-    def addEdge(self, f, t, cost=0):
-        """add an edge from vertex f to vertex t with a cost """
 
-        # TODO if either vertex is not in the graph,
-        # add it - or return an error (choice is up to you).
+    def add_edge(self, from_vertex, to_vertex, weight=None):
 
-        if f not in self.vertList:
-            self.addVertex(f)
+        if from_vertex == to_vertex:
+            print(f'You cant add the vertex to itself!')
+            return
 
-        if t not in self.vertList:
-            self.addVertex(t)
+        if from_vertex not in self.vert_dict or to_vertex not in self.vert_dict:
+            raise ValueError("One of the vertex doesn't exist!")
 
-        # TODO if both vertices in the graph, add the
-        # edge by making t a neighbor of f
-        # and using the addNeighbor method of the Vertex class.
-        # Hint: the vertex f is stored in self.vertList[f].
+        # assigning the weight
+        if weight is None:
+            weight = self.DEFAULT_WEIGHT
+        else:
+            weight = int(weight)
 
-        self.vertList[t].addNeighbor(self.vertList[f], cost)
+        edge = (from_vertex, to_vertex, weight)
+        # handling duplicated edges in input file
+        if edge in self.get_edges():
+            raise ValueError("You can't add duplicated edges!")
+
+        from_vert_obj = self.vert_dict[from_vertex]
+        to_vert_obj = self.vert_dict[to_vertex]
+
+        if self.directed:  # directed graph
+            from_vert_obj.add_neighbor(to_vert_obj, weight)
+        else:
+            # connect the edges in both ways
+            from_vert_obj.add_neighbor(to_vert_obj, weight)
+            to_vert_obj.add_neighbor(from_vert_obj, weight)
+
+        # add edges to unique edge_list
+
+        self.edge_list.append(edge)
+
+        def find_shortest_path(self, from_vertex, to_vertex):
+        """Search for the shortest path from vertex a to b using Breadth first search
+        Args:
+            from_vertex (str) : starting point on the graph
+            to_vertex (str) : the distanation or end of the path
+        Returns:
+            shortest path (tuple): List of vertices in the path and len
+                                    Empty list if path does not exist
+        """
+
+        if from_vertex not in self.vert_dict or to_vertex not in self.vert_dict:
+            raise KeyError(
+                "One of the given vertices does not exist in graph!")
+
+        # check if you are at the location
+        if from_vertex == to_vertex:
+            vert_obj = self.vert_dict[from_vertex]
+            return ([vert_obj.data], 0)
+
+        # grab the start location from graph
+        current_vertex = self.vert_dict[from_vertex]
+
+        # initialize the queue, visited nodes set, a dictionary
+        # to keep track of parent
+        queue = Queue(maxsize=len(self.get_vertices()))
+        seen_vertex = set()
+        parent_pointers = {}
+
+        # start the traversal
+        queue.put(current_vertex)
+        seen_vertex.add(current_vertex.data)
+
+        path = []
+        path_found = False
+        parent = None
+        current_vertex.parent = parent
+        # alternative way of storing the references to parent  pointers
+        parent_pointers[current_vertex.data] = None
+
+        while not queue.empty():
+            # dequeue the front element
+            current_vertex = queue.get()
+            path.append(current_vertex)
+
+            # check if we are at destination
+            if current_vertex.data == to_vertex:
+                path_found = True  # found the goal
+                break
+
+            # otherwise
+            for neighbor in current_vertex.neighbors:
+
+                if neighbor.data not in seen_vertex:
+                    queue.put(neighbor)
+                    seen_vertex.add(neighbor.data)
+                    neighbor.parent = current_vertex
+                    parent_pointers[neighbor.data] = current_vertex.data
+
+        if path_found:
+            path = []
+
+            while current_vertex is not None:
+                path.append(current_vertex.data)
+                current_vertex = current_vertex.parent
+
+            return (path[::-1], len(path) - 1)
+        # if there is no path from source to destination return -1
+        return ([], -1)
+
 
     def getVertices(self):
         """return all the vertices in the graph"""
