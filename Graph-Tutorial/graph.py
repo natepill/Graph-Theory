@@ -53,22 +53,20 @@ class Graph:
         self.DEFAULT_WEIGHT = 0
         self.directed = directed
 
-        
-    def addVertex(self, key):
-        """add a new vertex object to the graph with
-        the given key and return the vertex
-        """
-        # TODO increment the number of vertices
-        self.numVertices += 1
 
-        # TODO create a new vertex
-        new_vert = Vertex(key)
+    def add_vertex(self, key):
+        """Add a new vertex object to the graph with the given key and return
+        the vertex."""
 
-        # TODO add the new vertex to the vertex list
-        self.vertList[key] = new_vert
+        if key in self.vert_dict:
+            return
 
-        # TODO return the new vertex
-        return new_vert
+        # new vertex
+        new_vertex = Vertex(key)
+        self.vert_dict[key] = new_vertex
+        self.num_vertices += 1
+
+        return new_vertex
 
     def getVertex(self, key):
         """return the vertex if it exists"""
