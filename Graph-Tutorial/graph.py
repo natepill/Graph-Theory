@@ -44,11 +44,16 @@ class Vertex(object):
 
 
 class Graph:
-    def __init__(self):
-        """ initializes a graph object with an empty dictionary. """
-        self.vertList = {}
-        self.numVertices = 0
+    def __init__(self, directed=False):
+        """Initialize a graph object with an empty dictionary."""
+        self.vert_dict = {}
+        self.edge_list = []  # unique edge_list
+        self.num_vertices = 0
+        self.num_edges = 0
+        self.DEFAULT_WEIGHT = 0
+        self.directed = directed
 
+        
     def addVertex(self, key):
         """add a new vertex object to the graph with
         the given key and return the vertex
