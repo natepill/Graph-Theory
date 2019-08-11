@@ -68,10 +68,12 @@ class Graph:
 
         return new_vertex
 
-    def getVertex(self, key):
-        """return the vertex if it exists"""
-        # TODO return the vertex if it is in the graph
-        return self.vertList[key]
+    def get_vertex(self, key):
+        """Return the vertex if it exists"""
+        # return the vertex if it exists
+        if key in self.vert_dict.keys():
+            return key
+        return None
 
 
     def addEdge(self, f, t, cost=0):
