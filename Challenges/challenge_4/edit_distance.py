@@ -1,13 +1,15 @@
 # A Dynamic Programming based Python program for edit
 # distance problem
-def editDistDP(str1, str2, m, n):
+
+
+def edit_distance(str1, str2, m, n):
     # Create a table to store results of subproblems
     dp = [[0 for x in range(n+1)] for x in range(m+1)]
 
     # Fill d[][] in bottom up manner
     for i in range(m+1):
         for j in range(n+1):
-  
+
             # If first string is empty, only option is to
             # insert all characters of second string
             if i == 0:
@@ -32,8 +34,8 @@ def editDistDP(str1, str2, m, n):
 
     return dp[m][n]
 
-# Driver program
-str1 = "sunday"
-str2 = "saturday"
 
-print(editDistDP(str1, str2, len(str1), len(str2)))
+if __name__ == "__main__":
+    str1 = "cat"
+    str2 = "cat"
+    print(edit_distance(str1, str2, len(str1), len(str2)))
