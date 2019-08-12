@@ -41,6 +41,12 @@ class Vertex(object):
         return self.neighbors[vertex] if vertex in self.neighbors else None
 
 
+""" Graph Class
+A class demonstrating the essential
+facts and functionalities of graphs.
+"""
+
+# NOTE: id is the key and vertecies are the values
 
 
 class Graph:
@@ -53,15 +59,20 @@ class Graph:
         self.DEFAULT_WEIGHT = 0
         self.directed = directed
 
+    def __iter__(self):
+        """Iterate over the vertex objects in the graph, to use sytax:
+        for v in g"""
+        return iter(self.vert_dict.values())
 
     def add_vertex(self, key):
         """Add a new vertex object to the graph with the given key and return
         the vertex."""
 
         if key in self.vert_dict:
+            print(f'Vertex {key} already exists')
             return
 
-        # new vertex
+        # create a new vertex
         new_vertex = Vertex(key)
         self.vert_dict[key] = new_vertex
         self.num_vertices += 1
@@ -70,14 +81,13 @@ class Graph:
 
     def get_vertex(self, key):
         """Return the vertex if it exists"""
-        # return the vertex if it exists
+        # return the vertex if it is in the graph
         if key in self.vert_dict.keys():
             return key
         return None
 
     def get_neighbors_of(self, vertex):
-        """
-        Grabs all the neighbors of the current vertex
+        """Grabs all the neighbors of the current vertex
         Args:
             vertex (str): a given vertex
         Returns:
@@ -86,7 +96,6 @@ class Graph:
         if vertex in self.vert_dict:
             return self.vert_dict[vertex]
         raise KeyError("The vertex not found in the Graph!")
-
 
     def add_edge(self, from_vertex, to_vertex, weight=None):
 
@@ -122,7 +131,19 @@ class Graph:
 
         self.edge_list.append(edge)
 
-        def find_shortest_path(self, from_vertex, to_vertex):
+    def get_vertices(self):
+        """Return all the vertices in the graph"""
+        return list(self.vert_dict.keys())
+
+    def get_edges(self):
+        """Return number of all edges in the graph"""
+        edges = []
+        for v in self.vert_dict.values():
+            for w in v.neighbors:
+                edges.append((v.data, w.data, v.get_edge_weight(w)))
+        return edges
+
+    def find_shortest_path(self, from_vertex, to_vertex):
         """Search for the shortest path from vertex a to b using Breadth first search
         Args:
             from_vertex (str) : starting point on the graph
@@ -191,43 +212,90 @@ class Graph:
         # if there is no path from source to destination return -1
         return ([], -1)
 
-
-    def getVertices(self):
-        """return all the vertices in the graph"""
-        return self.vertList.keys()
-
-    def __iter__(self):
-        """iterate over the vertex objects in the
-        graph, to use sytax: for v in g
+    def dfs_recursive(self, from_vertex, visited=None, order=None):
+        """Traverse the graph and get all vertices using DFS algorithm
         """
-        return iter(self.vertList.values())
+
+        if from_vertex not in self.vert_dict:
+            raise KeyError(
+                "One of the given vertices does not exist in graph!")
+
+        current_vertex = self.vert_dict[from_vertex]
+        # check if its first iteration
+        if visited is None and order is None:
+            visited = set()
+            order = []
+
+        visited.add(current_vertex.data)
+        order.append(current_vertex.data)
+
+        for neigbor in current_vertex.neighbors:
+            if neigbor.data not in visited:
+                self.dfs_recursive(neigbor.data, visited, order=order)
+
+        # print(order)
+        return order
+
+    def dfs_paths(self, from_vertex, to_vertex, visited=None):
+        """Find a path between two vertices using Depth First Search
+        (It is just a path not necessarily the shortest path.)
+        """
+        if from_vertex not in self.vert_dict or to_vertex not in self.vert_dict:
+            raise KeyError(
+                "One of the given vertices does not exist in graph!")
+
+        # check if you are at the location
+        if from_vertex == to_vertex:
+            return [from_vertex]
+        if visited is None:
+            visited = set()
+        current_vertex = self.vert_dict[from_vertex]
+        visited.add(current_vertex.data)
+
+        for neighbor in current_vertex.neighbors:
+
+            if neighbor.data not in visited:
+                path = self.dfs_paths(neighbor.data, to_vertex, visited)
+                # print("after path updated")
+                if path:
+                    path.append(current_vertex.data)
+                    return path
+
+        return []
+
+    def is_eulerian(self):
+        """Determines if a given undirected graph is Eulerian (has an Eulerian Cycle)
+        Returns:
+            bool: true if graph has eulerian cycle, false otherwise
+        """
+        # check if the there is vertices
+        if not self.vert_dict:
+            return False
+        # for each vertex has to have even number of vertices
+        for vertex in self.vert_dict.values():
+            neighbors = vertex.neighbors
+            if len(neighbors) % 2 != 0 or len(neighbors) == 0:
+                return False
+        return True
 
 
-# Driver code
+def build_graph(graph: Graph, vertices, edges):
+    """Build a graph using given vertices and edges
+    Args:
+        graph (Graph): graph object
+        vertices (list): list of vertices
+        edges (list): list of edges containing vertices and weights
+    Returns:
+        graph (Graph): graph objects containing vertices and edges
+    """
 
+    # add the vertices
+    for vertex in vertices:
+        graph.add_vertex(vertex)
 
-if __name__ == "__main__":
+    # add the edges
+    for edge in edges:
+        # unpack the edge, and add
+        graph.add_edge(*edge)
 
-    # Challenge 1: Create the graph
-
-    g = Graph()
-
-    # Add your friends
-    g.addVertex("Friend 1")
-    g.addVertex("Friend 2")
-    g.addVertex("Friend 3")
-
-    # ...  add all 10 including you ...
-
-    # Add connections (non weighted edges for now)
-    g.addEdge("Friend 1", "Friend 2")
-    g.addEdge("Friend 2", "Friend 3")
-
-    # Challenge 1: Output the vertices & edges
-    # Print vertices
-    print("The vertices are: ", g.getVertices(), "\n")
-
-    print("The edges are: ")
-    for v in g:
-        for w in v.getNeighbors():
-            print("( %s , %s )" % (v.getId(), w.getId()))
+    return graph
