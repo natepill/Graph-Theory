@@ -1,5 +1,6 @@
 
-def knapsack(capacity, items, n, lookup):
+
+def knapsack(capacity, items, n):
     '''
     A  method to determine the maximum value of the items included in the knapsack
     without exceeding the capacity  C
