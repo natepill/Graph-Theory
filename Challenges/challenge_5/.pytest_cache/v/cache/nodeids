@@ -1,0 +1,4 @@
+[
+  "challenge_5_test.py::EulerianTest::test_lone_vertex",
+  "challenge_5_test.py::EulerianTest::test_separate_subgraphs"
+]

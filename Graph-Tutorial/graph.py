@@ -263,20 +263,56 @@ class Graph:
 
         return []
 
+
+    def find_maximal_clique(self, vertex):
+        """Return a maximal clique of a given vertex."""
+
+        # Raise TypeError when graph is directed
+        if self.directed == True:
+            raise TypeError("directed graphs cannot have cliques")
+
+        # Clique: set of vertices
+        clique = set([vertex])
+
+        for neighbor in neighbors:
+
+            # Track clique vertecies that are adjacent to their neighbors
+            clique_counter = 0
+
+            # Confirm vertex adjacency
+            for clique_vertex in clique:
+                # neighbor not adjacent
+                if neighbor not in clique_vertex.get_neighbors():
+                    # Move to next neighbor
+                    break
+
+                # Vertex is adjacent
+                clique_counter += 1
+
+                # If all clique verticies are adjacent to the current neighor,
+                # then add that neighbor to the clique
+                if clique_counter == len(clique):
+                    clique.add(neighor)
+                    break
+
+        # After all neighors checked, return the clique
+        return clique
+
     def is_eulerian(self):
-        """Determines if a given undirected graph is Eulerian (has an Eulerian Cycle)
-        Returns:
-            bool: true if graph has eulerian cycle, false otherwise
-        """
+
         # check if the there is vertices
-        if not self.vert_dict:
-            return False
-        # for each vertex has to have even number of vertices
+        if self.directed == True:
+            raise TypeError("Can not be called on directed graph")
+
+        # Check all vertices in self for their degree
         for vertex in self.vert_dict.values():
-            neighbors = vertex.neighbors
-            if len(neighbors) % 2 != 0 or len(neighbors) == 0:
+            # If a vertex has an odd degree, the graph is not Eulerian
+            if len(vertex.get_neighbors()) % 2 == 1:
                 return False
+
+        # If all vertices have an even degree, the graph is Eulerian
         return True
+
 
 
 
