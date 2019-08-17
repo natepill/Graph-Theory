@@ -1,6 +1,6 @@
 import sys
-from graphs.graph import Graph, Vertex, build_graph
-from graphs.read_file import read_file
+from graph import Graph, Vertex, build_graph, read_file
+
 
 
 def file_to_graph(filename):
@@ -18,5 +18,4 @@ def file_to_graph(filename):
 if __name__ == "__main__":
 
     filename = sys.argv[1]
-
-    file_to_graph()
+    file_to_graph(filename)
