@@ -1,0 +1,4 @@
+[
+  "challenge_3_test.py::VertexTest::test_dfs_found",
+  "challenge_3_test.py::VertexTest::test_dfs_not_found"
+]

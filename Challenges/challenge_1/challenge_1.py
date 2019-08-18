@@ -12,6 +12,18 @@ def file_to_graph(filename):
     # Build graph
     graph = build_graph(graph, vertices, edges)
 
+
+
+    # Resulting Graph info
+    print('Number of vertices: {}'.format(len(graph.get_vertices())))
+    print('Number of edges: {}'.format(len(graph.edge_list)))
+    print("The Edge List:")
+
+    for edge in graph.get_vertices():
+        print(edge)
+
+
+
     return graph
 
 
